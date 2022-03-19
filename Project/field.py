@@ -31,6 +31,7 @@ class field:
 
     def valid_row(self, col):
         try:
+            #0 is rand number from 0 to 9
             self.field[0][col]
             return True
         except IndexError:
@@ -38,43 +39,34 @@ class field:
 
     def can_use_col(self, row, col, size):
 
-        valid_coords = []
+        for i in range(size): 
 
-        for i in range(size):
-
-            if self.valid_col(col) and self.valid_row(row):
-                if self.field[row][col] == ".":
-                    valid_coords.append((row, col))
-                    col = col + 1
-                else:
-                    col = col + 1
+            if self.valid_col(col) and self.valid_row(row) :
+                for i in [-1,0,1]:
+                    for j in [-1,0,1]:
+                        if ( self.valid_row(row+i) and  self.valid_col(col+j)):
+                            if  self.field[row+i][col+j] == "U":
+                                return False 
             else:
                 return False
+            col = col + 1
+        return True
 
-        if size == len(valid_coords):
-            return True
-        else:
-            return False
 
     def can_use_row(self, row, col, size):
 
-        valid_coords = []
-
         for i in range(size):
 
-            if self.valid_row(row) and self.valid_col(col):
-                if self.field[row][col] == ".":
-                    valid_coords.append((row, col))
-                    row = row + 1
-                else:
-                    row = row + 1
+            if self.valid_col(col) and self.valid_row(row) :
+                for i in [-1,0,1]:
+                    for j in [-1,0,1]:
+                        if ( self.valid_row(row+i) and  self.valid_col(col+j)):
+                            if  self.field[row+i][col+j] == "U":
+                                return False     
             else:
                 return False
-
-        if size == len(valid_coords):
-            return True
-        else:
-            return False
+            row = row + 1
+        return True
 
     def set_ship_col(self, row, col, size):
         for i in range(1, size + 1):

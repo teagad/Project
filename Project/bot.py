@@ -56,6 +56,7 @@ class Bot(Player):
                 target.field.field[row][col] = "X"
                 target.register_hit(row, col)
                 self.radar.radar[row][col] = "X"
+                self.compu_strike(target)
 
             else:
                 input("\nbot missed")

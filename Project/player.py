@@ -14,7 +14,7 @@ class Player:
 
     def set_fleet(self):
         os.system('clear')
-        input("Pick a coordinate between 1 and 10 for the rows and between 'A'-'Z' for colums on your board(press Enter to continue)\n")
+        input("Pick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)\n")
         input("Boats are placed form right to left(press Enter to continue)\n")
 
 
@@ -25,12 +25,12 @@ class Player:
                 flag = True
                 while flag:
                     self.view_console()
-                    print("Place your %s" % (ship))
+                    print("Place your %s\n" % (ship))
                     try:
-                        row = int(input("Pick a row for head of the ship =)")) - 1
                         col = alphabet[input("Pick a column for head of the ship =)").upper()]
+                        row = int(input("Pick a row for head of the ship =)")) - 1
                     except(KeyError,ValueError,TypeError):
-                        input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'Z' for colums on your board(press Enter to continue)")
+                        input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)")
                         os.system("clear")
                         continue
                     orientation = str(input("Vertical or Horizontal v or h"))
@@ -86,8 +86,8 @@ class Player:
         alphabet = {"A" : 0, "B" : 1, "C" : 2, "D" : 3, "E" : 4, "F" : 5, "G" : 6, "H" : 7, "I" : 8, "J" : 9}
         self.view_console()
         try:
-            row = int(input("Pick a row to make a shot")) - 1
-            col = alphabet[input("Pick a colum to make a shot").upper()]
+            col = alphabet[input("Pick a colum to make a shot ").upper()]
+            row = int(input("Pick a row to make a shot ")) - 1
             if self.field.valid_row(row) and self.field.valid_col(col):
                 if target.field.field[row][col] == "U":
                     input("\ndirect hit")
@@ -108,8 +108,7 @@ class Player:
                 print("Coordinates out of range")
                 self.strike(target)
         except(KeyError,ValueError,TypeError):
-            input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'Z' for colums on your board(press Enter to continue)")
+            input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)")
             os.system("clear")
             self.strike(target)
-
 
