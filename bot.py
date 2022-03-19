@@ -44,14 +44,13 @@ class Bot(Player):
                 else:
                     continue
 
-    # Automated strike function
 
     def compu_strike(self, target):
         row = random.randint(0, 9)
         col = random.randint(0, 9)
 
         if self.radar.radar[row][col] == ".":
-            input("...Target acquired....%s, %s" % (row, col))
+            input("Target acquired%s, %s" % (row, col))
 
             if target.field.field[row][col] == "U":
                 print("DIRECT HIT!")
@@ -60,7 +59,7 @@ class Bot(Player):
                 self.radar.radar[row][col] = "X"
 
             else:
-                print("Missed....recalibrating")
+                print("Missed")
                 self.radar.radar[row][col] = "O"
 
         else:

@@ -4,6 +4,4 @@ def playbattleships():
     print("Welcome to Battleships!")
     BattleshipsCOMP()
 
-
-
 playbattleships()

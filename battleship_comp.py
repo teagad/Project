@@ -20,7 +20,6 @@ class BattleshipsCOMP:
             return False
 
     def clear_screen(self):
-        input("\npress Enter")
         os.system('clear')
 
     def victory_message(self):
@@ -34,6 +33,8 @@ class BattleshipsCOMP:
 
         c = Bot()
         c.set_compu_fleet()
+        print("bot sets fleet")
+        input("\npress Enter to clear the consloe")
         self.clear_screen()
 
         flag = True

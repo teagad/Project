@@ -12,6 +12,12 @@ class Radar:
         self.radar[row][col] = value
 
     def view_radar(self):
-        print("Radar")
+        print("Your shoot desk")
+        row_number = 1
+        colum_counter = 'A'
+        colum_names = ["A","B","C","D","E","F",'G','H','I','J']
+        print("   " + " ".join(colum_names))
         for row in self.radar:
-            print(" ".join(row))
+            print(str(row_number).ljust(2) + " " + " ".join(row))
+            row_number += 1
+        
