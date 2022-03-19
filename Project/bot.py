@@ -52,7 +52,7 @@ class Bot(Player):
         if self.radar.radar[row][col] == ".":
 
             if target.field.field[row][col] == "U":
-                input("\nbot get it")
+                input("\nbot get it and do one more shot")
                 target.field.field[row][col] = "X"
                 target.register_hit(row, col)
                 self.radar.radar[row][col] = "X"

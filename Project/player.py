@@ -14,6 +14,7 @@ class Player:
 
     def set_fleet(self):
         os.system('clear')
+        print("\tINSTRUCTION\n\n")
         input("Pick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)\n")
         input("Boats are placed form right to left(press Enter to continue)\n")
 
@@ -33,7 +34,7 @@ class Player:
                         input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)")
                         os.system("clear")
                         continue
-                    orientation = str(input("Vertical or Horizontal v or h"))
+                    orientation = str(input("Vertical or Horizontal v or h "))
 
                     if orientation.lower() == "v":
                         if self.field.can_use_row(row, col, size):
@@ -78,9 +79,10 @@ class Player:
             if (row, col) in boat.coords:
                 boat.coords.remove((row, col))
                 if boat.check_status():
+
                     self.fleet.remove(boat)
-                    print(boat.ship_type,end=' ')
-                    print("is dead")
+                    
+                    input(boat.ship_type + " is dead")
 
     def strike(self, target):
         alphabet = {"A" : 0, "B" : 1, "C" : 2, "D" : 3, "E" : 4, "F" : 5, "G" : 6, "H" : 7, "I" : 8, "J" : 9}
@@ -90,13 +92,16 @@ class Player:
             row = int(input("Pick a row to make a shot ")) - 1
             if self.field.valid_row(row) and self.field.valid_col(col):
                 if target.field.field[row][col] == "U":
-                    input("\ndirect hit")
+                    input("\ndirect hit next turn again you(this can be a victory shot)")
                     target.field.field[row][col] = "X"
                     target.register_hit(row, col)
                     self.radar.radar[row][col] = "X"
+                    os.system("clear")
+
+                    self.strike(target)
 
                 else:
-                    if self.radar.radar[row][col] == "O":
+                    if self.radar.radar[row][col] == "O" or self.radar.radar[row][col] == "X":
                         input("\nyou already hit there")
                         os.system("clear")
                         self.strike(target)
