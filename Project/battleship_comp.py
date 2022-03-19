@@ -34,21 +34,19 @@ class BattleshipsCOMP:
         c = Bot()
         c.set_compu_fleet()
         print("bot sets fleet")
-        input("\npress Enter to clear the consloe")
+        print("\n")
+        input("\npress Enter to start the game")
         self.clear_screen()
 
-        flag = True
-        while flag is True:
+        while  True:
             p.strike(c)
             if self.fleet_sunk(c) is True:
                 self.victory_message()
-                flag = False
+                break
             else:
-                self.clear_screen()
-
                 c.compu_strike(p)
                 if self.fleet_sunk(p) is True:
                     self.victory_message()
-                    flag = False
+                    break
                 else:
                     self.clear_screen()

@@ -13,8 +13,10 @@ class Player:
         self.fleet = []
 
     def set_fleet(self):
-        input("Pick a coordinate between 1 and 10 for the rows and between 'A'-'Z' for colums on your board(press Enter to continue)")
-        input("Boats are placed form right to left(press Enter to continue)")
+        os.system('clear')
+        input("Pick a coordinate between 1 and 10 for the rows and between 'A'-'Z' for colums on your board(press Enter to continue)\n")
+        input("Boats are placed form right to left(press Enter to continue)\n")
+
 
         alphabet = {"A" : 0, "B" : 1, "C" : 2, "D" : 3, "E" : 4, "F" : 5, "G" : 6, "H" : 7, "I" : 8, "J" : 9}
 
@@ -24,8 +26,13 @@ class Player:
                 while flag:
                     self.view_console()
                     print("Place your %s" % (ship))
-                    row = int(input("Pick a row for head of the ship =)")) - 1
-                    col = alphabet[input("Pick a column for head of the ship =)").upper()]
+                    try:
+                        row = int(input("Pick a row for head of the ship =)")) - 1
+                        col = alphabet[input("Pick a column for head of the ship =)").upper()]
+                    except(KeyError,ValueError,TypeError):
+                        input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'Z' for colums on your board(press Enter to continue)")
+                        os.system("clear")
+                        continue
                     orientation = str(input("Vertical or Horizontal v or h"))
 
                     if orientation.lower() == "v":
@@ -37,6 +44,8 @@ class Player:
                             flag = False
                         else:
                             input("Overlapping ships")
+                            os.system('clear')
+                            continue
 
                     elif orientation.lower() == "h":
                         if self.field.can_use_col(row, col, size):
@@ -47,18 +56,22 @@ class Player:
                             flag = False
                         else:
                             input("Overlapping ships")
+                            os.system('clear')
+                            continue
 
                     else:
+                        input("type h or v(press Enter to continue)")
+                        os.system('clear')
                         continue
 
                     self.view_console()
-                    input("press Enter to clear the consloe")
                     os.system('clear')
 
 
     def view_console(self):
-        self.radar.view_radar()
         self.field.view_ocean()
+        self.radar.view_radar()
+
 
     def register_hit(self, row, col):
         for boat in self.fleet:
@@ -66,30 +79,37 @@ class Player:
                 boat.coords.remove((row, col))
                 if boat.check_status():
                     self.fleet.remove(boat)
-                    print("%s has been sunk" % (boat.ship_type))
+                    print(boat.ship_type,end=' ')
+                    print("is dead")
 
     def strike(self, target):
         alphabet = {"A" : 0, "B" : 1, "C" : 2, "D" : 3, "E" : 4, "F" : 5, "G" : 6, "H" : 7, "I" : 8, "J" : 9}
         self.view_console()
-        row = int(input("Pick a row to make a shot")) - 1
-        col = alphabet[input("Pick a colum to make a shot").upper()]
+        try:
+            row = int(input("Pick a row to make a shot")) - 1
+            col = alphabet[input("Pick a colum to make a shot").upper()]
+            if self.field.valid_row(row) and self.field.valid_col(col):
+                if target.field.field[row][col] == "U":
+                    input("\ndirect hit")
+                    target.field.field[row][col] = "X"
+                    target.register_hit(row, col)
+                    self.radar.radar[row][col] = "X"
 
-        if self.field.valid_row(row) and self.field.valid_col(col):
-            if target.field.field[row][col] == "U":
-                print("direct hit")
-                target.field.field[row][col] = "X"
-                target.register_hit(row, col)
-                self.radar.radar[row][col] = "X"
+                else:
+                    if self.radar.radar[row][col] == "O":
+                        input("\nyou already hit there")
+                        os.system("clear")
+                        self.strike(target)
+                    else:
+                        input("\nMissed")
+                        self.radar.radar[row][col] = "O"
 
             else:
-                if self.radar.radar[row][col] == "O":
-                    print("you already hit there")
-                    self.strike(target)
-                else:
-                    print("Missed")
-                    self.radar.radar[row][col] = "O"
-
-        else:
-            print("Coordinates out of range")
+                print("Coordinates out of range")
+                self.strike(target)
+        except(KeyError,ValueError,TypeError):
+            input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'Z' for colums on your board(press Enter to continue)")
+            os.system("clear")
             self.strike(target)
-        os.system('clear')
+
+

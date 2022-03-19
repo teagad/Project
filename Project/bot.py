@@ -11,38 +11,38 @@ class Bot(Player):
     def set_compu_fleet(self):
         positions = ["v", "h"]
 
-        for ship, size in self.ships.items():
+        for ship_type, size in self.ships.items():
+            for ship in ship_type:
+                flag = True
+                while flag:
+                    row = random.randint(0, 9)
+                    col = random.randint(0, 9)
+                    orientation = random.choice(positions)
 
-            flag = True
-            while flag:
-                row = random.randint(0, 9)
-                col = random.randint(0, 9)
-                orientation = random.choice(positions)
+                    if orientation == "v":
+                        if self.field.can_use_row(row, col, size):
+                            self.field.set_ship_row(row, col, size)
+                            boat = Warship(ship, size)
+                            boat.plot_vertical(row, col)
+                            self.fleet.append(boat)
+                            flag = False
 
-                if orientation == "v":
-                    if self.field.can_use_row(row, col, size):
-                        self.field.set_ship_row(row, col, size)
-                        boat = Warship(ship, size)
-                        boat.plot_vertical(row, col)
-                        self.fleet.append(boat)
-                        flag = False
+                        else:
+                            row = row + 2
+
+                    elif orientation == "h":
+                        if self.field.can_use_col(row, col, size):
+                            self.field.set_ship_col(row, col, size)
+                            boat = Warship(ship, size)
+                            boat.plot_horizontal(row, col)
+                            self.fleet.append(boat)
+                            flag = False
+
+                        else:
+                            col = col + 2
 
                     else:
-                        row = row + 2
-
-                elif orientation == "h":
-                    if self.field.can_use_col(row, col, size):
-                        self.field.set_ship_col(row, col, size)
-                        boat = Warship(ship, size)
-                        boat.plot_horizontal(row, col)
-                        self.fleet.append(boat)
-                        flag = False
-
-                    else:
-                        col = col + 2
-
-                else:
-                    continue
+                        continue
 
 
     def compu_strike(self, target):
@@ -50,16 +50,16 @@ class Bot(Player):
         col = random.randint(0, 9)
 
         if self.radar.radar[row][col] == ".":
-            input("Target acquired%s, %s" % (row, col))
 
             if target.field.field[row][col] == "U":
-                print("DIRECT HIT!")
+                input("\nbot get it")
                 target.field.field[row][col] = "X"
                 target.register_hit(row, col)
                 self.radar.radar[row][col] = "X"
 
             else:
-                print("Missed")
+                input("\nbot missed")
+                target.field.field[row][col] = "O"
                 self.radar.radar[row][col] = "O"
 
         else:

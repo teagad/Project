@@ -12,7 +12,7 @@ class field:
         self.field[row][col] = value
 
     def view_ocean(self):
-        print("Yours desk")
+        print("Yours desk\n\n")
         row_number = 1
         colum_counter = 'A'
         colum_names = ["A","B","C","D","E","F",'G','H','I','J']
@@ -20,6 +20,7 @@ class field:
         for row in self.field:
             print(str(row_number).ljust(2) + " " + " ".join(row))
             row_number += 1
+        print()
 
     def valid_col(self, row):
         try:
