@@ -1,3 +1,4 @@
+from attr import field
 from bot import Bot
 from player import Player
 import os
@@ -9,15 +10,12 @@ class BattleshipsCOMP:
         self.step_bot()
 
     def fleet_sunk(self, player):
-        ship_counters = 0
-        for row in range(len(player.field.field)):
-            for col in range(len(player.field.field)):
-                if player.field.field[row][col] == "U":
-                    ship_counters += 1
-        if ship_counters == 0:
-            return True
-        else:
-            return False
+        for row in player.field.field:
+            for element in row:
+                if  element == "U":
+                    return False
+        return True
+            
 
     def clear_screen(self):
         os.system('clear')

@@ -16,7 +16,4 @@ class Warship:
             col = col + 1
 
     def check_status(self):
-        if self.coords == []:
-            return True
-        else:
-            return False
+        return self.coords == []

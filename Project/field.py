@@ -4,8 +4,7 @@ class field:
         self.field = [["." for i in range(1, width + 1)] for i in range(1, height + 1)]
 
     def __getitem__(self, point):
-        row, col = point
-        return self.field[row][col]
+        return self.field[point[0]][point[1]]
 
     def __setitem__(self, point, value):
         row, col = point
@@ -14,7 +13,6 @@ class field:
     def view_ocean(self):
         print("Yours desk\n\n")
         row_number = 1
-        colum_counter = 'A'
         colum_names = ["A","B","C","D","E","F",'G','H','I','J']
         print("   " + " ".join(colum_names))
         for row in self.field:
