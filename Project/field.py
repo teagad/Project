@@ -13,7 +13,7 @@ class field:
     def view_ocean(self):
         print("Yours desk\n\n")
         row_number = 1
-        colum_names = ["A","B","C","D","E","F",'G','H','I','J']
+        colum_names = ["A", "B", "C", "D", "E", "F", 'G', 'H', 'I', 'J']
         print("   " + " ".join(colum_names))
         for row in self.field:
             print(str(row_number).ljust(2) + " " + " ".join(row))
@@ -29,7 +29,7 @@ class field:
 
     def valid_row(self, col):
         try:
-            #0 is rand number from 0 to 9
+            # 0 is rand number from 0 to 9
             self.field[0][col]
             return True
         except IndexError:
@@ -37,30 +37,29 @@ class field:
 
     def can_use_col(self, row, col, size):
 
-        for i in range(size): 
+        for i in range(size):
 
-            if self.valid_col(col) and self.valid_row(row) :
-                for i in [-1,0,1]:
-                    for j in [-1,0,1]:
-                        if ( self.valid_row(row+i) and  self.valid_col(col+j)):
-                            if  self.field[row+i][col+j] == "U":
-                                return False 
+            if self.valid_col(col) and self.valid_row(row):
+                for i in [-1, 0, 1]:
+                    for j in [-1, 0, 1]:
+                        if (self.valid_row(row + i) and self.valid_col(col + j)):
+                            if self.field[row + i][col + j] == "U":
+                                return False
             else:
                 return False
             col = col + 1
         return True
 
-
     def can_use_row(self, row, col, size):
 
         for i in range(size):
 
-            if self.valid_col(col) and self.valid_row(row) :
-                for i in [-1,0,1]:
-                    for j in [-1,0,1]:
-                        if ( self.valid_row(row+i) and  self.valid_col(col+j)):
-                            if  self.field[row+i][col+j] == "U":
-                                return False     
+            if self.valid_col(col) and self.valid_row(row):
+                for i in [-1, 0, 1]:
+                    for j in [-1, 0, 1]:
+                        if (self.valid_row(row + i) and self.valid_col(col + j)):
+                            if self.field[row + i][col + j] == "U":
+                                return False
             else:
                 return False
             row = row + 1

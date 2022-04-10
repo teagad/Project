@@ -44,7 +44,6 @@ class Bot(Player):
                     else:
                         continue
 
-
     def compu_strike(self, target):
         row = random.randint(0, 9)
         col = random.randint(0, 9)

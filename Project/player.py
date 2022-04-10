@@ -3,10 +3,11 @@ from radar import Radar
 from warship import Warship
 import os
 
-class Player:
 
-    ships = {tuple(["Ship_len5"]): 5, tuple(["Ship_len4"] * 2): 4, tuple(["Ship_len3"] * 3): 3, tuple(["Ship_len2"] * 4): 2}
-    
+class Player:
+    ships = {tuple(["Ship_len5"]): 5, tuple(["Ship_len4"] * 2): 4, tuple(["Ship_len3"] * 3): 3,
+             tuple(["Ship_len2"] * 4): 2}
+
     def __init__(self):
         self.field = field()
         self.radar = Radar()
@@ -15,11 +16,11 @@ class Player:
     def set_fleet(self):
         os.system('clear')
         print("\tINSTRUCTION\n\n")
-        input("Pick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)\n")
+        input(
+            "Pick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)\n")
         input("Boats are placed form right to left(press Enter to continue)\n")
 
-
-        alphabet = {"A" : 0, "B" : 1, "C" : 2, "D" : 3, "E" : 4, "F" : 5, "G" : 6, "H" : 7, "I" : 8, "J" : 9}
+        alphabet = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7, "I": 8, "J": 9}
 
         for ship_type, size in self.ships.items():
             for ship in ship_type:
@@ -30,8 +31,9 @@ class Player:
                     try:
                         col = alphabet[input("Pick a column for head of the ship =)").upper()]
                         row = int(input("Pick a row for head of the ship =)")) - 1
-                    except(KeyError,ValueError,TypeError):
-                        input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)")
+                    except(KeyError, ValueError, TypeError):
+                        input(
+                            "\nPick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)")
                         os.system("clear")
                         continue
                     orientation = str(input("Vertical or Horizontal v or h "))
@@ -68,24 +70,21 @@ class Player:
                     self.view_console()
                     os.system('clear')
 
-
     def view_console(self):
         self.field.view_ocean()
         self.radar.view_radar()
-
 
     def register_hit(self, row, col):
         for boat in self.fleet:
             if (row, col) in boat.coords:
                 boat.coords.remove((row, col))
                 if boat.check_status():
-
                     self.fleet.remove(boat)
-                    
+
                     input(boat.ship_type + " is dead")
 
     def strike(self, target):
-        alphabet = {"A" : 0, "B" : 1, "C" : 2, "D" : 3, "E" : 4, "F" : 5, "G" : 6, "H" : 7, "I" : 8, "J" : 9}
+        alphabet = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7, "I": 8, "J": 9}
         self.view_console()
         try:
             col = alphabet[input("Pick a colum to make a shot ").upper()]
@@ -112,8 +111,8 @@ class Player:
             else:
                 print("Coordinates out of range")
                 self.strike(target)
-        except(KeyError,ValueError,TypeError):
-            input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)")
+        except(KeyError, ValueError, TypeError):
+            input(
+                "\nPick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)")
             os.system("clear")
             self.strike(target)
-

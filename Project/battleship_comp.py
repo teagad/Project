@@ -12,10 +12,9 @@ class BattleshipsCOMP:
     def fleet_sunk(self, player):
         for row in player.field.field:
             for element in row:
-                if  element == "U":
+                if element == "U":
                     return False
         return True
-            
 
     def clear_screen(self):
         os.system('clear')
@@ -36,7 +35,7 @@ class BattleshipsCOMP:
         input("\npress Enter to start the game")
         self.clear_screen()
 
-        while  True:
+        while True:
             p.strike(c)
             if self.fleet_sunk(c) is True:
                 self.victory_message()
