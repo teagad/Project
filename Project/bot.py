@@ -1,5 +1,8 @@
 from player import Player
 from warship import Warship
+from singleton import Singleton
+import pygame
+from time import sleep
 import random
 
 
@@ -10,7 +13,6 @@ class Bot(Player):
 
     def set_compu_fleet(self):
         positions = ["v", "h"]
-
         for ship_type, size in self.ships.items():
             for ship in ship_type:
                 flag = True
@@ -21,7 +23,7 @@ class Bot(Player):
 
                     if orientation == "v":
                         if self.field.can_use_row(row, col, size):
-                            self.field.set_ship_row(row, col, size)
+                            self.field.set_ship_row(row, col, size, 0)
                             boat = Warship(ship, size)
                             boat.plot_vertical(row, col)
                             self.fleet.append(boat)
@@ -32,7 +34,7 @@ class Bot(Player):
 
                     elif orientation == "h":
                         if self.field.can_use_col(row, col, size):
-                            self.field.set_ship_col(row, col, size)
+                            self.field.set_ship_col(row, col, size, 0)
                             boat = Warship(ship, size)
                             boat.plot_horizontal(row, col)
                             self.fleet.append(boat)
@@ -48,20 +50,30 @@ class Bot(Player):
     def compu_strike(self, target):
         row = random.randint(0, 9)
         col = random.randint(0, 9)
-
+        screen = Singleton.screen
+        BLACK = Singleton.BLACK
+        left_margin = Singleton.left_margin
+        upper_margin = Singleton.upper_margin
+        block_size = Singleton.block_size
         if self.radar.radar[row][col] == ".":
-
             if target.field.field[row][col] == "U":
-                input("\nbot get it and do one more shot")
                 target.field.field[row][col] = "X"
                 target.register_hit(row, col)
                 self.radar.radar[row][col] = "X"
-                self.compu_strike(target)
+                x1 = block_size * (col + 15) + left_margin
+                y1 = block_size * (row) + upper_margin
+                pygame.draw.line(screen, BLACK, (x1, y1),
+                                 (x1 + block_size, y1 + block_size), block_size // 6)
+                pygame.draw.line(screen, BLACK, (x1, y1 + block_size),
+                                 (x1 + block_size, y1), block_size // 6)
+                return True
 
             else:
-                input("\nbot missed")
                 target.field.field[row][col] = "O"
+                pygame.draw.circle(screen, BLACK, (block_size * (
+                        col + 0.5 + 15) + left_margin, block_size * (row + 0.5) + upper_margin), block_size // 6)
                 self.radar.radar[row][col] = "O"
+                return False
 
         else:
-            self.compu_strike(target)
+            return True

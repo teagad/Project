@@ -1,7 +1,9 @@
 from field import field
 from radar import Radar
 from warship import Warship
-import os
+from singleton import Singleton
+import random
+import pygame
 
 class Player:
 
@@ -13,107 +15,77 @@ class Player:
         self.fleet = []
 
     def set_fleet(self):
-        os.system('clear')
-        print("\tINSTRUCTION\n\n")
-        input("Pick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)\n")
-        input("Boats are placed form right to left(press Enter to continue)\n")
-
-
-        alphabet = {"A" : 0, "B" : 1, "C" : 2, "D" : 3, "E" : 4, "F" : 5, "G" : 6, "H" : 7, "I" : 8, "J" : 9}
+        positions = ["v", "h"]
 
         for ship_type, size in self.ships.items():
             for ship in ship_type:
                 flag = True
                 while flag:
-                    self.view_console()
-                    print("Place your %s\n" % (ship))
-                    try:
-                        col = alphabet[input("Pick a column for head of the ship =)").upper()]
-                        row = int(input("Pick a row for head of the ship =)")) - 1
-                    except(KeyError,ValueError,TypeError):
-                        input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)")
-                        os.system("clear")
-                        continue
-                    orientation = str(input("Vertical or Horizontal v or h "))
+                    row = random.randint(0, 9)
+                    col = random.randint(0, 9)
+                    orientation = random.choice(positions)
 
-                    if orientation.lower() == "v":
+                    if orientation == "v":
                         if self.field.can_use_row(row, col, size):
-                            self.field.set_ship_row(row, col, size)
+                            self.field.set_ship_row(row, col, size, 1)
                             boat = Warship(ship, size)
                             boat.plot_vertical(row, col)
                             self.fleet.append(boat)
                             flag = False
-                        else:
-                            input("Overlapping ships")
-                            os.system('clear')
-                            continue
 
-                    elif orientation.lower() == "h":
+                        else:
+                            row = row + 2
+
+                    elif orientation == "h":
                         if self.field.can_use_col(row, col, size):
-                            self.field.set_ship_col(row, col, size)
+                            self.field.set_ship_col(row, col, size, 1)
                             boat = Warship(ship, size)
                             boat.plot_horizontal(row, col)
                             self.fleet.append(boat)
                             flag = False
+
                         else:
-                            input("Overlapping ships")
-                            os.system('clear')
-                            continue
+                            col = col + 2
 
                     else:
-                        input("type h or v(press Enter to continue)")
-                        os.system('clear')
                         continue
-
-                    self.view_console()
-                    os.system('clear')
-
-
-    def view_console(self):
-        self.field.view_ocean()
-        self.radar.view_radar()
-
 
     def register_hit(self, row, col):
         for boat in self.fleet:
             if (row, col) in boat.coords:
                 boat.coords.remove((row, col))
                 if boat.check_status():
-
                     self.fleet.remove(boat)
-                    
-                    input(boat.ship_type + " is dead")
 
-    def strike(self, target):
-        alphabet = {"A" : 0, "B" : 1, "C" : 2, "D" : 3, "E" : 4, "F" : 5, "G" : 6, "H" : 7, "I" : 8, "J" : 9}
-        self.view_console()
-        try:
-            col = alphabet[input("Pick a colum to make a shot ").upper()]
-            row = int(input("Pick a row to make a shot ")) - 1
-            if self.field.valid_row(row) and self.field.valid_col(col):
-                if target.field.field[row][col] == "U":
-                    input("\ndirect hit next turn again you(this can be a victory shot)")
-                    target.field.field[row][col] = "X"
-                    target.register_hit(row, col)
-                    self.radar.radar[row][col] = "X"
-                    os.system("clear")
+    def strike(self, target, col, row):
+        screen = Singleton.screen
+        BLACK = Singleton.BLACK
+        left_margin = Singleton.left_margin
+        upper_margin = Singleton.upper_margin
+        block_size = Singleton.block_size
 
-                    self.strike(target)
-
-                else:
-                    if self.radar.radar[row][col] == "O" or self.radar.radar[row][col] == "X":
-                        input("\nyou already hit there")
-                        os.system("clear")
-                        self.strike(target)
-                    else:
-                        input("\nMissed")
-                        self.radar.radar[row][col] = "O"
-
+        if self.field.valid_row(row) and self.field.valid_col(col):
+            if target.field.field[row][col] == "U":
+                target.field.field[row][col] = "X"
+                target.register_hit(row, col)
+                self.radar.radar[row][col] = "X"
+                x1 = block_size * (col) + left_margin
+                y1 = block_size * (row) + upper_margin
+                pygame.draw.line(screen, BLACK, (x1, y1),
+                                 (x1 + block_size, y1 + block_size), block_size // 6)
+                pygame.draw.line(screen, BLACK, (x1, y1 + block_size),
+                                 (x1 + block_size, y1), block_size // 6)
+                return False
             else:
-                print("Coordinates out of range")
-                self.strike(target)
-        except(KeyError,ValueError,TypeError):
-            input("\nPick a coordinate between 1 and 10 for the rows and between 'A'-'J' for colums on your board(press Enter to continue)")
-            os.system("clear")
-            self.strike(target)
+                if self.radar.radar[row][col] == "O" or self.radar.radar[row][col] == "X":
+                    print("you already hit there")
+                    return False
+                else:
+                    pygame.draw.circle(screen, BLACK, (block_size * (
+                            col + 0.5) + left_margin, block_size * (row + 0.5) + upper_margin), block_size // 6)
+                    self.radar.radar[row][col] = "O"
+                    return True
+        else:
+            print("Coordinates out of range")
+            return False
 
