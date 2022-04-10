@@ -5,10 +5,11 @@ from singleton import Singleton
 import random
 import pygame
 
-class Player:
 
-    ships = {tuple(["Ship_len5"]): 5, tuple(["Ship_len4"] * 2): 4, tuple(["Ship_len3"] * 3): 3, tuple(["Ship_len2"] * 4): 2}
-    
+class Player:
+    ships = {tuple(["Ship_len5"]): 5, tuple(["Ship_len4"] * 2): 4, tuple(["Ship_len3"] * 3): 3,
+             tuple(["Ship_len2"] * 4): 2}
+
     def __init__(self):
         self.field = field()
         self.radar = Radar()
@@ -88,4 +89,3 @@ class Player:
         else:
             print("Coordinates out of range")
             return False
-

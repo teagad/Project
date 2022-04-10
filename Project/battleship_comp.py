@@ -17,11 +17,10 @@ class BattleshipsCOMP:
                     return False
         return True
 
-
     def victory_message(self):
         print("END OF THE GAME")
 
-###START__________
+    ###START__________
 
     def step_bot(self):
         pygame.init()
@@ -48,7 +47,7 @@ class BattleshipsCOMP:
         pygame.display.update()
 
         game_over = False
-        param = False        #если false то игрок ходит первым. иначе первым ходит бот
+        param = False  # если false то игрок ходит первым. иначе первым ходит бот
         while not game_over:
             pygame.display.update()
             for event in pygame.event.get():
@@ -56,14 +55,15 @@ class BattleshipsCOMP:
                     game_over = True
                 elif event.type == pygame.MOUSEBUTTONDOWN and not param:
                     x, y = event.pos
-                    if (left_margin <= x <= left_margin + 10*block_size) and (upper_margin <= y <= upper_margin + 10*block_size):
+                    if (left_margin <= x <= left_margin + 10 * block_size) and (
+                            upper_margin <= y <= upper_margin + 10 * block_size):
                         param = p.strike(c, ((x - left_margin) // block_size), ((y - upper_margin) // block_size))
                         print(param)
                     else:
                         print("Out of range")
                         param = False
 
-            #print("Cicle ended")
+            # print("Cicle ended")
             if self.fleet_sunk(c) is True:
                 pygame.quit()
                 game_over = True

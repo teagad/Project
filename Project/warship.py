@@ -6,12 +6,12 @@ class Warship:
         self.coords = []
 
     def plot_vertical(self, row, col):
-        for i in range(1, self.size+1):
+        for i in range(1, self.size + 1):
             self.coords.append((row, col))
             row = row + 1
 
     def plot_horizontal(self, row, col):
-        for i in range(1, self.size+1):
+        for i in range(1, self.size + 1):
             self.coords.append((row, col))
             col = col + 1
 
