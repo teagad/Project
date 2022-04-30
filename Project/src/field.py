@@ -1,4 +1,4 @@
-from singleton import Singleton as bc
+from src.singleton import Singleton as bc
 import pygame
 
 

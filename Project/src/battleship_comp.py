@@ -1,6 +1,6 @@
-from bot import Bot
-from player import Player
-from singleton import Singleton
+from src.bot import Bot
+from src.player import Player
+from src.singleton import Singleton
 import pygame
 from time import sleep
 
@@ -19,8 +19,6 @@ class BattleshipsCOMP:
 
     def victory_message(self):
         print("END OF THE GAME")
-
-    ###START__________
 
     def step_bot(self):
         pygame.init()
@@ -47,7 +45,7 @@ class BattleshipsCOMP:
         pygame.display.update()
 
         game_over = False
-        param = False  # если false то игрок ходит первым. иначе первым ходит бот
+        param = False # если false то игрок ходит первым. иначе первым ходит бот
         while not game_over:
             pygame.display.update()
             for event in pygame.event.get():
@@ -57,7 +55,8 @@ class BattleshipsCOMP:
                     x, y = event.pos
                     if (left_margin <= x <= left_margin + 10 * block_size) and (
                             upper_margin <= y <= upper_margin + 10 * block_size):
-                        param = p.strike(c, ((x - left_margin) // block_size), ((y - upper_margin) // block_size))
+                        param = p.strike(c, ((x - left_margin) // block_size), 
+                                        ((y - upper_margin) // block_size))
                         print(param)
                     else:
                         print("Out of range")

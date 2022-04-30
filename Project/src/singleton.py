@@ -1,8 +1,7 @@
 import pygame
 
-
+pygame.init()
 class Singleton:
-    pygame.init()
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     block_size = 40
