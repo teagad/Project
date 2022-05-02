@@ -65,6 +65,8 @@ class Bot(Player):
                                  (x1 + Singleton.block_size, y1 + Singleton.block_size), Singleton.block_size // 6)
                 pygame.draw.line(Singleton.screen, Singleton.BLACK, (x1, y1 + Singleton.block_size),
                                  (x1 + Singleton.block_size, y1), Singleton.block_size // 6)
+                if Singleton.user_points > 0:
+                    Singleton.user_points -= 1
                 return True
 
             else:

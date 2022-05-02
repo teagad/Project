@@ -76,6 +76,7 @@ class Player:
                                  (x1 + block_size, y1 + block_size), block_size // 6)
                 pygame.draw.line(screen, BLACK, (x1, y1 + block_size),
                                  (x1 + block_size, y1), block_size // 6)
+                Singleton.user_points += 2
                 return False
             else:
                 if self.radar.radar[row][col] == "O" or self.radar.radar[row][col] == "X":

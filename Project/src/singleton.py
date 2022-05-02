@@ -14,4 +14,5 @@ class Singleton:
     font = pygame.font.SysFont('notosans', font_size)
     pygame.display.set_caption("Морской бой")
     regime = True
-    USER_NAME = "Joe Biden"
+    user_name = "Joe Biden"
+    user_points = 0

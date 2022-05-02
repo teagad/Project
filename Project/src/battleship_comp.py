@@ -23,7 +23,14 @@ class BattleshipsCOMP:
                     return False
         return True
 
+    def to_top(self):
+        """Записывать время жизни в top.txt"""
+        with open('top.txt', 'a') as f:
+            f.write(Singleton.user_name + ":" + str(Singleton.user_points) + "\n")
+            f.close()
+
     def victory_message(self):
+        self.to_top()
         back_ground = Background('asserts/bg_pic.jpg', [0, 0])
         Singleton.screen.blit(back_ground.image, back_ground.rect)
         vic = Background('asserts/victory.png', [0, 0])
@@ -40,11 +47,45 @@ class BattleshipsCOMP:
     ###START__________
 
     def check_profile(self):
-        if Singleton.USER_NAME.get_value() == "":
-            Singleton.USER_NAME = "Joe Biden"
+        if Singleton.user_name.get_value() == "":
+            Singleton.user_name = "Joe Biden"
         else:
-            Singleton.USER_NAME = Singleton.USER_NAME.get_value()
-        print(f"profile: {Singleton.USER_NAME}")
+            Singleton.user_name = Singleton.user_name.get_value()
+        print(f"profile: {Singleton.user_name}")
+
+    def print_top(self):
+        # try:
+        array = []
+        profiles = []
+        back_ground = Background('asserts/game_bg.jpg', [0, 0])
+        Singleton.screen.blit(back_ground.image, back_ground.rect)
+        try:
+            with open('top.txt', 'r') as f:
+                for lines in f:
+                    if lines != "\n":
+                        profiles += [lines.split(":")[0]]
+                        array += [lines.split(":")[1]]
+                array = [*map(int, array)]
+                arrays = [(b, a) for b, a in sorted(zip(array, profiles))]
+                array, profiles = zip(*arrays)
+                my_font = pygame.font.SysFont('Comic Sans MS', 45)
+                start = [0, 20]
+                step = 40
+                count = 1
+                for top_elem, profile in zip(array[::-1], profiles[::-1]):
+                    text = f"{count} : {profile}-{top_elem} points"
+                    text_surface = my_font.render(text, False, (255, 0, 0))
+                    Singleton.screen.blit(text_surface, (Singleton.screen.get_rect().width / 2 - text_surface.get_width()/2, start[1]))
+                    start[1] += step
+                    count += 1
+        except NameError:
+            start = [0, 0]
+            my_font = pygame.font.SysFont('Comic Sans MS', 45)
+            text = "Top is empty"
+            text_surface = my_font.render(text, False, (255, 0, 0))
+            Singleton.screen.blit(text_surface, start)
+        pygame.display.update()
+        sleep(5)
 
     def step_bot(self):
         pygame.init()
@@ -116,9 +157,10 @@ class BattleshipsCOMP:
             )
         mytheme.set_background_color_opacity(0.6)
         menu = pygame_menu.Menu('', 1240, 650, theme=mytheme)
-        Singleton.USER_NAME = menu.add.text_input('NAME :')
+        Singleton.user_name = menu.add.text_input('NAME :')
         Singleton.regime = menu.add.selector('REGIME : ', [('Fog of War', False), ('Simple', True)])        
         menu.add.button('PLAY', self.step_bot)
+        menu.add.button('TOP', self.print_top)
         menu.add.button('Quit', pygame_menu.events.EXIT)
 
         while True:
@@ -183,7 +225,7 @@ class BattleshipsCOMP:
         font_size = int(block_size / 1.5)
         font = pygame.font.SysFont('notosans', font_size)
         player1 = font.render("Gerald", True, BLACK)
-        player2 = font.render(Singleton.USER_NAME, True, BLACK)
+        player2 = font.render(Singleton.user_name, True, BLACK)
         sign1_width = player1.get_width()
         sign2_width = player2.get_width()
         screen.blit(player1, (left_margin + 5 * block_size - sign1_width //
