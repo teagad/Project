@@ -15,7 +15,7 @@ class Player:
         self.radar = Radar()
         self.fleet = []
 
-    def set_fleet(self):
+    def set_fleet(self, regime=bool):
         positions = ["v", "h"]
 
         for ship_type, size in self.ships.items():
@@ -28,7 +28,7 @@ class Player:
 
                     if orientation == "v":
                         if self.field.can_use_row(row, col, size):
-                            self.field.set_ship_row(row, col, size, 1)
+                            self.field.set_ship_row(row, col, size, regime)
                             boat = Warship(ship, size)
                             boat.plot_vertical(row, col)
                             self.fleet.append(boat)
@@ -39,7 +39,7 @@ class Player:
 
                     elif orientation == "h":
                         if self.field.can_use_col(row, col, size):
-                            self.field.set_ship_col(row, col, size, 1)
+                            self.field.set_ship_col(row, col, size, regime)
                             boat = Warship(ship, size)
                             boat.plot_horizontal(row, col)
                             self.fleet.append(boat)

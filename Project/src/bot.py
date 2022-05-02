@@ -49,28 +49,28 @@ class Bot(Player):
     def compu_strike(self, target):
         row = random.randint(0, 9)
         col = random.randint(0, 9)
-        screen = Singleton.screen
-        BLACK = Singleton.BLACK
-        left_margin = Singleton.left_margin
-        upper_margin = Singleton.upper_margin
-        block_size = Singleton.block_size
+        #screen = Singleton.screen
+        #BLACK = Singleton.BLACK
+        #left_margin = Singleton.left_margin
+        #upper_margin = Singleton.upper_margin
+        #block_size = Singleton.block_size
         if self.radar.radar[row][col] == ".":
             if target.field.field[row][col] == "U":
                 target.field.field[row][col] = "X"
                 target.register_hit(row, col)
                 self.radar.radar[row][col] = "X"
-                x1 = block_size * (col + 15) + left_margin
-                y1 = block_size * (row) + upper_margin
-                pygame.draw.line(screen, BLACK, (x1, y1),
-                                 (x1 + block_size, y1 + block_size), block_size // 6)
-                pygame.draw.line(screen, BLACK, (x1, y1 + block_size),
-                                 (x1 + block_size, y1), block_size // 6)
+                x1 = Singleton.block_size * (col + 15) + Singleton.left_margin
+                y1 = Singleton.block_size * (row) + Singleton.upper_margin
+                pygame.draw.line(Singleton.screen, Singleton.BLACK, (x1, y1),
+                                 (x1 + Singleton.block_size, y1 + Singleton.block_size), Singleton.block_size // 6)
+                pygame.draw.line(Singleton.screen, Singleton.BLACK, (x1, y1 + Singleton.block_size),
+                                 (x1 + Singleton.block_size, y1), Singleton.block_size // 6)
                 return True
 
             else:
                 target.field.field[row][col] = "O"
-                pygame.draw.circle(screen, BLACK, (block_size * (
-                        col + 0.5 + 15) + left_margin, block_size * (row + 0.5) + upper_margin), block_size // 6)
+                pygame.draw.circle(Singleton.screen, Singleton.BLACK, (Singleton.block_size * (
+                        col + 0.5 + 15) + Singleton.left_margin, Singleton.block_size * (row + 0.5) + Singleton.upper_margin), Singleton.block_size // 6)
                 self.radar.radar[row][col] = "O"
                 return False
 
