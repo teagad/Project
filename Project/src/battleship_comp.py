@@ -14,7 +14,7 @@ from src.singleton import Singleton
 class BattleshipsCOMP:
 
     def __init__(self):
-        self.step_bot()
+        self.menu()
 
     def fleet_sunk(self, player):
         for row in player.field.field:
@@ -39,67 +39,71 @@ class BattleshipsCOMP:
     
     ###START__________
 
+    def check_profile(self):
+        if Singleton.USER_NAME.get_value() == "":
+            Singleton.USER_NAME = "Joe Biden"
+        else:
+            Singleton.USER_NAME = Singleton.USER_NAME.get_value()
+        print(f"profile: {Singleton.USER_NAME}")
+
     def step_bot(self):
         pygame.init()
+        self.check_profile()
         block_size = Singleton.block_size
         left_margin = Singleton.left_margin
         upper_margin = Singleton.upper_margin
         screen = Singleton.screen
-
-        def start_the_game():
-            WHITE = Singleton.WHITE
-            font_size = int(block_size / 1.5)
-            font = pygame.font.SysFont('notosans', font_size)
-            pygame.display.set_caption("Морской бой")
-            screen.fill(WHITE)
+        WHITE = Singleton.WHITE
+        font_size = int(block_size / 1.5)
+        font = pygame.font.SysFont('notosans', font_size)
+        pygame.display.set_caption("Морской бой")
+        back_ground = Background('asserts/game_bg.jpg', [0, 0])
+        Singleton.screen.blit(back_ground.image, back_ground.rect)
+        pygame.display.update()
+        self.draw_grid(font)
+        self.sign_grids()
+        pygame.display.update()
+        c = Bot()
+        c.set_compu_fleet()
+        p = Player()
+        p.set_fleet(Singleton.regime.get_value()[1])
+        pygame.display.update()
+        game_over = False
+        param = False  # если false то игрок ходит первым. иначе первым ходит бот
+        while not game_over:
             pygame.display.update()
-
-            self.draw_grid(font)
-            self.sign_grids()
-            pygame.display.update()
-
-            c = Bot()
-            c.set_compu_fleet()
-
-            p = Player()
-            p.set_fleet(Singleton.regime.get_value()[1])
-            pygame.display.update()
-
-            
-            game_over = False
-            param = False  # если false то игрок ходит первым. иначе первым ходит бот
-            while not game_over:
-                pygame.display.update()
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        game_over = True
-                    elif event.type == pygame.MOUSEBUTTONDOWN and not param:
-                        x, y = event.pos
-                        if (left_margin <= x <= left_margin + 10 * block_size) and (
-                                upper_margin <= y <= upper_margin + 10 * block_size):
-                            param = p.strike(c, ((x - left_margin) // block_size), ((y - upper_margin) // block_size))
-                            print(param)
-                        else:
-                            print("Out of range")
-                            param = False
-
-                if self.fleet_sunk(c) is True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     game_over = True
-                    self.victory_message()
-                    sleep(3)
-                    break
-                elif param:
-                    sleep(0.5)
-                    param = c.compu_strike(p)
-                    print("bot step")
-                    if self.fleet_sunk(p) is True:
-                        game_over = True
-                        sleep(3)
-                        self.lose_message()
-                        break
+                elif event.type == pygame.MOUSEBUTTONDOWN and not param:
+                    x, y = event.pos
+                    if (left_margin <= x <= left_margin + 10 * block_size) and (
+                            upper_margin <= y <= upper_margin + 10 * block_size):
+                        param = p.strike(c, ((x - left_margin) // block_size), ((y - upper_margin) // block_size))
+                        print(param)
                     else:
-                        pygame.display.update()
+                        print("Out of range")
+                        param = False
 
+            if self.fleet_sunk(c) is True:
+                game_over = True
+                self.victory_message()
+                sleep(3)
+                break
+            elif param:
+                sleep(0.5)
+                param = c.compu_strike(p)
+                print("bot step")
+                if self.fleet_sunk(p) is True:
+                    game_over = True
+                    sleep(3)
+                    self.lose_message()
+                    break
+                else:
+                    pygame.display.update()
+        self.menu()
+
+    def menu(self):
         back_ground = Background('asserts/bg_pic.jpg', [0, 0])
         font = pygame_menu.font.FONT_FRANCHISE
         mytheme = pygame_menu.Theme(
@@ -114,23 +118,21 @@ class BattleshipsCOMP:
         menu = pygame_menu.Menu('', 1240, 650, theme=mytheme)
         Singleton.USER_NAME = menu.add.text_input('NAME :')
         Singleton.regime = menu.add.selector('REGIME : ', [('Fog of War', False), ('Simple', True)])        
-        menu.add.button('PLAY', start_the_game)
+        menu.add.button('PLAY', self.step_bot)
         menu.add.button('Quit', pygame_menu.events.EXIT)
 
         while True:
-            screen.blit(back_ground.image, back_ground.rect)
+            Singleton.screen.blit(back_ground.image, back_ground.rect)
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
                     exit()
             if menu.is_enabled():
                 menu.update(events)
-                menu.draw(screen)
+                menu.draw(Singleton.screen)
 
             pygame.display.update()
         
-
-
     def draw_grid(self, font):
         screen = Singleton.screen
         BLACK = Singleton.BLACK
@@ -181,7 +183,7 @@ class BattleshipsCOMP:
         font_size = int(block_size / 1.5)
         font = pygame.font.SysFont('notosans', font_size)
         player1 = font.render("Gerald", True, BLACK)
-        player2 = font.render(Singleton.USER_NAME.get_value(), True, BLACK)
+        player2 = font.render(Singleton.USER_NAME, True, BLACK)
         sign1_width = player1.get_width()
         sign2_width = player2.get_width()
         screen.blit(player1, (left_margin + 5 * block_size - sign1_width //
