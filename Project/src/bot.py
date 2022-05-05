@@ -49,11 +49,6 @@ class Bot(Player):
     def compu_strike(self, target):
         row = random.randint(0, 9)
         col = random.randint(0, 9)
-        #screen = Singleton.screen
-        #BLACK = Singleton.BLACK
-        #left_margin = Singleton.left_margin
-        #upper_margin = Singleton.upper_margin
-        #block_size = Singleton.block_size
         if self.radar.radar[row][col] == ".":
             if target.field.field[row][col] == "U":
                 target.field.field[row][col] = "X"
