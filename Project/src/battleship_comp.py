@@ -77,7 +77,7 @@ class BattleshipsCOMP:
                     Singleton.screen.blit(text_surface, (Singleton.screen.get_rect().width / 2 - text_surface.get_width()/2, start[1]))
                     start[1] += step
                     count += 1
-        except NameError:
+        except Exception:
             start = [0, 0]
             my_font = pygame.font.SysFont('Comic Sans MS', 45)
             text = "Top is empty"
