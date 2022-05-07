@@ -33,6 +33,7 @@ class Field:
 
     def valid_row(self, col):
         try:
+            # 0 is rand number from 0 to 9
             self.field[0][col]
             return True
         except IndexError:
