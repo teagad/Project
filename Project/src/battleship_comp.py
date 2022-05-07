@@ -40,8 +40,6 @@ class BattleshipsCOMP:
         Singleton.screen.blit(vic.image, vic.rect)
         pygame.display.update()
 
-    ###START__________
-
     def check_profile(self):
         if Singleton.user_name.get_value() == "":
             Singleton.user_name = "Joe Biden"
@@ -50,7 +48,6 @@ class BattleshipsCOMP:
         print(f"profile: {Singleton.user_name}")
 
     def print_top(self):
-        # try:
         array = []
         profiles = []
         back_ground = Background('asserts/game_bg.jpg', [0, 0])
@@ -105,20 +102,20 @@ class BattleshipsCOMP:
         p = Player()
         p.set_fleet(Singleton.regime.get_value()[1])
         pygame.display.update()
-        ###Oтрисвка очков###
         font_40 = pygame.font.Font(None, 40)
         score_str = font_40.render('Scores', True, (0, 0, 0))
         _str = score_str.get_width()
-        screen.blit(score_str, (left_margin + 26 * block_size - _str // 2, upper_margin - 2 * font_size))
-        ###---------------###
+        screen.blit(score_str, (left_margin + 26 * block_size - _str //
+                            2, upper_margin - 2 * font_size))
         game_over = False
-        param = False  # если false то игрок ходит первым. иначе первым ходит бот
-        while not game_over:
+        param = False
+        while not game_over:            
             shrift = font_40.render(str(Singleton.user_points), True, (78, 140, 0))
             score = shrift.get_width()
-            pygame.draw.rect(screen, (255, 255, 255),
-                             (left_margin + 26 * block_size - score // 2, upper_margin - font_size, 15, font_size))
-            screen.blit(shrift, (left_margin + 26 * block_size - score // 2, upper_margin - font_size))
+            pygame.draw.rect(screen, (255, 255, 255), (left_margin + 26 * block_size - score //
+                              2, upper_margin - font_size, 35, font_size))
+            screen.blit(shrift, (left_margin + 26 * block_size - score //
+                              2, upper_margin - font_size))
 
             pygame.display.update()
             for event in pygame.event.get():
