@@ -1,9 +1,9 @@
-from src.field import field
-from src.radar import Radar
-from src.warship import Warship
-from src.singleton import Singleton
 import random
 import pygame
+from src.field import Field
+from src.radar import Radar
+from src.singleton import Singleton
+from src.warship import Warship
 
 
 class Player:
@@ -11,7 +11,7 @@ class Player:
              tuple(["Ship_len2"] * 4): 2}
 
     def __init__(self):
-        self.field = field()
+        self.field = Field()
         self.radar = Radar()
         self.fleet = []
 
@@ -60,7 +60,7 @@ class Player:
 
     def strike(self, target, col, row):
         screen = Singleton.screen
-        BLACK = Singleton.BLACK
+        black = Singleton.black
         left_margin = Singleton.left_margin
         upper_margin = Singleton.upper_margin
         block_size = Singleton.block_size
@@ -72,21 +72,21 @@ class Player:
                 self.radar.radar[row][col] = "X"
                 x1 = block_size * (col) + left_margin
                 y1 = block_size * (row) + upper_margin
-                pygame.draw.line(screen, BLACK, (x1, y1),
+                pygame.draw.line(screen, black, (x1, y1),
                                  (x1 + block_size, y1 + block_size), block_size // 6)
-                pygame.draw.line(screen, BLACK, (x1, y1 + block_size),
+                pygame.draw.line(screen, black, (x1, y1 + block_size),
                                  (x1 + block_size, y1), block_size // 6)
                 Singleton.user_points += 2
                 return False
+            
+            if self.radar.radar[row][col] == "O" or self.radar.radar[row][col] == "X":
+                print("you already hit there")
+                return False
             else:
-                if self.radar.radar[row][col] == "O" or self.radar.radar[row][col] == "X":
-                    print("you already hit there")
-                    return False
-                else:
-                    pygame.draw.circle(screen, BLACK, (block_size * (
-                            col + 0.5) + left_margin, block_size * (row + 0.5) + upper_margin), block_size // 6)
-                    self.radar.radar[row][col] = "O"
-                    return True
+                pygame.draw.circle(screen, black, (block_size * (
+                        col + 0.5) + left_margin, block_size * (row + 0.5) + upper_margin), block_size // 6)
+                self.radar.radar[row][col] = "O"
+                return True
         else:
             print("Coordinates out of range")
             return False

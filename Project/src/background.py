@@ -6,6 +6,7 @@ class Background(pygame.sprite.Sprite):
         1)Имеет параметры
         image(pygame.Surface),rect(pygame.Rect)
     """
+
     def __init__(self, image_file, location):
         """
         аргументы При создании:

@@ -3,8 +3,8 @@ import pygame
 
 class Singleton:
     pygame.init()
-    WHITE = (255, 255, 255)
-    BLACK = (0, 0, 0)
+    white = (255, 255, 255)
+    black = (0, 0, 0)
     block_size = 40
     left_margin = 40
     upper_margin = 50

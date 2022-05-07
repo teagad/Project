@@ -1,9 +1,8 @@
-from src.player import Player
-from src.warship import Warship
-from src.singleton import Singleton
 import pygame
-from time import sleep
 import random
+from src.player import Player
+from src.singleton import Singleton
+from src.warship import Warship
 
 
 class Bot(Player):
@@ -49,11 +48,11 @@ class Bot(Player):
     def compu_strike(self, target):
         row = random.randint(0, 9)
         col = random.randint(0, 9)
-        #screen = Singleton.screen
-        #BLACK = Singleton.BLACK
-        #left_margin = Singleton.left_margin
-        #upper_margin = Singleton.upper_margin
-        #block_size = Singleton.block_size
+        # screen = Singleton.screen
+        # black = Singleton.black
+        # left_margin = Singleton.left_margin
+        # upper_margin = Singleton.upper_margin
+        # block_size = Singleton.block_size
         if self.radar.radar[row][col] == ".":
             if target.field.field[row][col] == "U":
                 target.field.field[row][col] = "X"
@@ -61,9 +60,9 @@ class Bot(Player):
                 self.radar.radar[row][col] = "X"
                 x1 = Singleton.block_size * (col + 15) + Singleton.left_margin
                 y1 = Singleton.block_size * (row) + Singleton.upper_margin
-                pygame.draw.line(Singleton.screen, Singleton.BLACK, (x1, y1),
+                pygame.draw.line(Singleton.screen, Singleton.black, (x1, y1),
                                  (x1 + Singleton.block_size, y1 + Singleton.block_size), Singleton.block_size // 6)
-                pygame.draw.line(Singleton.screen, Singleton.BLACK, (x1, y1 + Singleton.block_size),
+                pygame.draw.line(Singleton.screen, Singleton.black, (x1, y1 + Singleton.block_size),
                                  (x1 + Singleton.block_size, y1), Singleton.block_size // 6)
                 if Singleton.user_points > 0:
                     Singleton.user_points -= 1
@@ -71,8 +70,10 @@ class Bot(Player):
 
             else:
                 target.field.field[row][col] = "O"
-                pygame.draw.circle(Singleton.screen, Singleton.BLACK, (Singleton.block_size * (
-                        col + 0.5 + 15) + Singleton.left_margin, Singleton.block_size * (row + 0.5) + Singleton.upper_margin), Singleton.block_size // 6)
+                pygame.draw.circle(Singleton.screen, Singleton.black, (Singleton.block_size * (
+                        col + 0.5 + 15) + Singleton.left_margin, Singleton.block_size * (
+                                                                                   row + 0.5) + Singleton.upper_margin),
+                                   Singleton.block_size // 6)
                 self.radar.radar[row][col] = "O"
                 return False
 

@@ -1,8 +1,8 @@
-from src.singleton import Singleton as bc
 import pygame
+from src.singleton import Singleton as bc
 
 
-class field:
+class Field:
 
     def __init__(self, width=10, height=10):
         self.field = [["." for i in range(1, width + 1)] for i in range(1, height + 1)]
@@ -40,7 +40,7 @@ class field:
             return False
 
     def can_use_col(self, row, col, size):
-        for i in range(size):
+        for _ in range(size):
             if self.valid_col(col) and self.valid_row(row):
                 for i in [-1, 0, 1]:
                     for j in [-1, 0, 1]:
@@ -53,7 +53,7 @@ class field:
         return True
 
     def can_use_row(self, row, col, size):
-        for i in range(size):
+        for _ in range(size):
             if self.valid_col(col) and self.valid_row(row):
                 for i in [-1, 0, 1]:
                     for j in [-1, 0, 1]:
@@ -71,8 +71,8 @@ class field:
             ship_height = bc.block_size
             x = bc.block_size * (col + 15) + bc.left_margin
             y = bc.block_size * (row) + bc.upper_margin
-            pygame.draw.rect(bc.screen, bc.BLACK, ((x, y), (ship_width, ship_height)), width=bc.block_size // 10)
-        for i in range(1, size + 1):
+            pygame.draw.rect(bc.screen, bc.black, ((x, y), (ship_width, ship_height)), width=bc.block_size // 10)
+        for _ in range(1, size + 1):
             self.field[row][col] = "U"
             col = col + 1
 
@@ -82,7 +82,7 @@ class field:
             ship_height = size * bc.block_size
             x = bc.block_size * (col + 15) + bc.left_margin
             y = bc.block_size * (row) + bc.upper_margin
-            pygame.draw.rect(bc.screen, bc.BLACK, ((x, y), (ship_width, ship_height)), width=bc.block_size // 10)
-        for i in range(1, size + 1):
+            pygame.draw.rect(bc.screen, bc.black, ((x, y), (ship_width, ship_height)), width=bc.block_size // 10)
+        for _ in range(1, size + 1):
             self.field[row][col] = "U"
             row = row + 1
